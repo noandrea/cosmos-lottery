@@ -2,11 +2,11 @@
 // source: lottery/query.proto
 
 /*
-Package types is a reverse proxy.
+Package lottery is a reverse proxy.
 
 It translates gRPC into RESTful JSON APIs.
 */
-package types
+package lottery
 
 import (
 	"context"

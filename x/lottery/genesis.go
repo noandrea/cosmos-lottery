@@ -1,24 +1,22 @@
 package lottery
 
-import (
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	"lottery/x/lottery/keeper"
-	"lottery/x/lottery/types"
-)
+// this line is used by starport scaffolding # genesis/types/import
 
-// InitGenesis initializes the capability module's state from a provided genesis
-// state.
-func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) {
-	// this line is used by starport scaffolding # genesis/module/init
-	k.SetParams(ctx, genState.Params)
+// DefaultIndex is the default capability global index
+const DefaultIndex uint64 = 1
+
+// DefaultGenesis returns the default Capability genesis state
+func DefaultGenesis() *GenesisState {
+	return &GenesisState{
+		// this line is used by starport scaffolding # genesis/types/default
+		Params: DefaultParams(),
+	}
 }
 
-// ExportGenesis returns the capability module's exported genesis.
-func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
-	genesis := types.DefaultGenesis()
-	genesis.Params = k.GetParams(ctx)
+// Validate performs basic genesis state validation returning an error upon any
+// failure.
+func (gs GenesisState) Validate() error {
+	// this line is used by starport scaffolding # genesis/types/validate
 
-	// this line is used by starport scaffolding # genesis/module/export
-
-	return genesis
+	return gs.Params.Validate()
 }

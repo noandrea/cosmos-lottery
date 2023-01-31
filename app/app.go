@@ -97,9 +97,9 @@ import (
 
 	"lottery/docs"
 
-	lotterymodule "lottery/x/lottery"
+	lotterymoduletypes "lottery/x/lottery"
 	lotterymodulekeeper "lottery/x/lottery/keeper"
-	lotterymoduletypes "lottery/x/lottery/types"
+	lotterymodule "lottery/x/lottery/module"
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 )
 

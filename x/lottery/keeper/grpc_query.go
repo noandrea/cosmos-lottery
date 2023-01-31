@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	"lottery/x/lottery/types"
+	"lottery/x/lottery"
 )
 
-var _ types.QueryServer = Keeper{}
+var _ lottery.QueryServer = Keeper{}

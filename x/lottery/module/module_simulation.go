@@ -1,17 +1,19 @@
-package lottery
+package module
 
 import (
 	"math/rand"
+
+	"lottery/testutil/sample"
+	"lottery/x/lottery"
+	lotterysimulation "lottery/x/lottery/simulation"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	simappparams "github.com/cosmos/cosmos-sdk/simapp/params"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
+	"github.com/cosmos/cosmos-sdk/x/gov/types"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
-	"lottery/testutil/sample"
-	lotterysimulation "lottery/x/lottery/simulation"
-	"lottery/x/lottery/types"
 )
 
 // avoid unused import issue
@@ -33,8 +35,8 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 	for i, acc := range simState.Accounts {
 		accs[i] = acc.Address.String()
 	}
-	lotteryGenesis := types.GenesisState{
-		Params: types.DefaultParams(),
+	lotteryGenesis := lottery.GenesisState{
+		Params: lottery.DefaultParams(),
 		// this line is used by starport scaffolding # simapp/module/genesisState
 	}
 	simState.GenState[types.ModuleName] = simState.Cdc.MustMarshalJSON(&lotteryGenesis)

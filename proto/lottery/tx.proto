@@ -3,7 +3,7 @@ package lottery.lottery;
 
 // this line is used by starport scaffolding # proto/tx/import
 
-option go_package = "lottery/x/lottery/types";
+option go_package = "lottery/x/lottery";
 
 // Msg defines the Msg service.
 service Msg {

@@ -3,27 +3,39 @@ package lottery_test
 import (
 	"testing"
 
-	"github.com/stretchr/testify/require"
-	keepertest "lottery/testutil/keeper"
-	"lottery/testutil/nullify"
 	"lottery/x/lottery"
-	"lottery/x/lottery/types"
+
+	"github.com/stretchr/testify/require"
 )
 
-func TestGenesis(t *testing.T) {
-	genesisState := types.GenesisState{
-		Params: types.DefaultParams(),
+func TestGenesisState_Validate(t *testing.T) {
+	for _, tc := range []struct {
+		desc     string
+		genState *lottery.GenesisState
+		valid    bool
+	}{
+		{
+			desc:     "default is valid",
+			genState: lottery.DefaultGenesis(),
+			valid:    true,
+		},
+		{
+			desc:     "valid genesis state",
+			genState: &lottery.GenesisState{
 
-		// this line is used by starport scaffolding # genesis/test/state
+				// this line is used by starport scaffolding # lottery/genesis/validField
+			},
+			valid: true,
+		},
+		// this line is used by starport scaffolding # lottery/genesis/testcase
+	} {
+		t.Run(tc.desc, func(t *testing.T) {
+			err := tc.genState.Validate()
+			if tc.valid {
+				require.NoError(t, err)
+			} else {
+				require.Error(t, err)
+			}
+		})
 	}
-
-	k, ctx := keepertest.LotteryKeeper(t)
-	lottery.InitGenesis(ctx, *k, genesisState)
-	got := lottery.ExportGenesis(ctx, *k)
-	require.NotNil(t, got)
-
-	nullify.Fill(&genesisState)
-	nullify.Fill(got)
-
-	// this line is used by starport scaffolding # genesis/test/assert
 }

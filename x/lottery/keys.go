@@ -1,4 +1,4 @@
-package types
+package lottery
 
 const (
 	// ModuleName defines the module name

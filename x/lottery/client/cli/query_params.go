@@ -3,10 +3,11 @@ package cli
 import (
 	"context"
 
+	"lottery/x/lottery"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/spf13/cobra"
-	"lottery/x/lottery/types"
 )
 
 func CmdQueryParams() *cobra.Command {
@@ -17,9 +18,9 @@ func CmdQueryParams() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx := client.GetClientContextFromCmd(cmd)
 
-			queryClient := types.NewQueryClient(clientCtx)
+			queryClient := lottery.NewQueryClient(clientCtx)
 
-			res, err := queryClient.Params(context.Background(), &types.QueryParamsRequest{})
+			res, err := queryClient.Params(context.Background(), &lottery.QueryParamsRequest{})
 			if err != nil {
 				return err
 			}

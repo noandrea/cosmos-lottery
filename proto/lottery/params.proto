@@ -3,7 +3,7 @@ package lottery.lottery;
 
 import "gogoproto/gogo.proto";
 
-option go_package = "lottery/x/lottery/types";
+option go_package = "lottery/x/lottery";
 
 // Params defines the parameters for the module.
 message Params {

@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	"lottery/x/lottery/types"
+	"lottery/x/lottery"
 )
 
 type msgServer struct {
@@ -10,8 +10,8 @@ type msgServer struct {
 
 // NewMsgServerImpl returns an implementation of the MsgServer interface
 // for the provided Keeper.
-func NewMsgServerImpl(keeper Keeper) types.MsgServer {
+func NewMsgServerImpl(keeper Keeper) lottery.MsgServer {
 	return &msgServer{Keeper: keeper}
 }
 
-var _ types.MsgServer = msgServer{}
+var _ lottery.MsgServer = msgServer{}
