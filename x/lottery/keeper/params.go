@@ -8,7 +8,10 @@ import (
 
 // GetParams get all parameters as types.Params
 func (k Keeper) GetParams(ctx sdk.Context) lottery.Params {
-	return lottery.NewParams()
+	// var params lottery.Params
+	// k.paramstore.GetParamSet(ctx, &params)
+	// TODO: persist params
+	return lottery.DefaultParams()
 }
 
 // SetParams set the params

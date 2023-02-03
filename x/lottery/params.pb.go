@@ -5,6 +5,7 @@ package lottery
 
 import (
 	fmt "fmt"
+	types "github.com/cosmos/cosmos-sdk/types"
 	_ "github.com/gogo/protobuf/gogoproto"
 	proto "github.com/gogo/protobuf/proto"
 	io "io"
@@ -25,6 +26,14 @@ const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 // Params defines the parameters for the module.
 type Params struct {
+	// what is the minimum bet amount (eg 1LOT)
+	MinBetAmount types.Coin `protobuf:"bytes,1,opt,name=minBetAmount,proto3" json:"minBetAmount"`
+	// what is the max bet amount
+	MaxBetAmount types.Coin `protobuf:"bytes,2,opt,name=maxBetAmount,proto3" json:"maxBetAmount"`
+	// the lottery fee amount
+	LotteryFee types.Coin `protobuf:"bytes,3,opt,name=lotteryFee,proto3" json:"lotteryFee"`
+	// the minimimum lottery pool size
+	LotteryMinPoolSize uint64 `protobuf:"varint,4,opt,name=lotteryMinPoolSize,proto3" json:"lotteryMinPoolSize,omitempty"`
 }
 
 func (m *Params) Reset()      { *m = Params{} }
@@ -59,6 +68,34 @@ func (m *Params) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_Params proto.InternalMessageInfo
 
+func (m *Params) GetMinBetAmount() types.Coin {
+	if m != nil {
+		return m.MinBetAmount
+	}
+	return types.Coin{}
+}
+
+func (m *Params) GetMaxBetAmount() types.Coin {
+	if m != nil {
+		return m.MaxBetAmount
+	}
+	return types.Coin{}
+}
+
+func (m *Params) GetLotteryFee() types.Coin {
+	if m != nil {
+		return m.LotteryFee
+	}
+	return types.Coin{}
+}
+
+func (m *Params) GetLotteryMinPoolSize() uint64 {
+	if m != nil {
+		return m.LotteryMinPoolSize
+	}
+	return 0
+}
+
 func init() {
 	proto.RegisterType((*Params)(nil), "lottery.lottery.Params")
 }
@@ -66,15 +103,23 @@ func init() {
 func init() { proto.RegisterFile("lottery/params.proto", fileDescriptor_ae5b10e5b4e8f293) }
 
 var fileDescriptor_ae5b10e5b4e8f293 = []byte{
-	// 119 bytes of a gzipped FileDescriptorProto
+	// 250 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0xc9, 0xc9, 0x2f, 0x29,
 	0x49, 0x2d, 0xaa, 0xd4, 0x2f, 0x48, 0x2c, 0x4a, 0xcc, 0x2d, 0xd6, 0x2b, 0x28, 0xca, 0x2f, 0xc9,
 	0x17, 0xe2, 0x87, 0x8a, 0xea, 0x41, 0x69, 0x29, 0x91, 0xf4, 0xfc, 0xf4, 0x7c, 0xb0, 0x9c, 0x3e,
-	0x88, 0x05, 0x51, 0xa6, 0xc4, 0xc7, 0xc5, 0x16, 0x00, 0xd6, 0x66, 0xc5, 0x32, 0x63, 0x81, 0x3c,
-	0x83, 0x93, 0xf6, 0x89, 0x47, 0x72, 0x8c, 0x17, 0x1e, 0xc9, 0x31, 0x3e, 0x78, 0x24, 0xc7, 0x38,
-	0xe1, 0xb1, 0x1c, 0xc3, 0x85, 0xc7, 0x72, 0x0c, 0x37, 0x1e, 0xcb, 0x31, 0x44, 0x09, 0xc2, 0xac,
-	0xa9, 0xd0, 0x87, 0xb2, 0x92, 0xd8, 0xc0, 0x66, 0x18, 0x03, 0x02, 0x00, 0x00, 0xff, 0xff, 0x9b,
-	0x83, 0x3b, 0x02, 0x82, 0x00, 0x00, 0x00,
+	0x88, 0x05, 0x51, 0x26, 0x25, 0x97, 0x9c, 0x5f, 0x9c, 0x9b, 0x5f, 0xac, 0x9f, 0x94, 0x58, 0x9c,
+	0xaa, 0x5f, 0x66, 0x98, 0x94, 0x5a, 0x92, 0x68, 0xa8, 0x9f, 0x9c, 0x9f, 0x99, 0x07, 0x91, 0x57,
+	0xea, 0x64, 0xe2, 0x62, 0x0b, 0x00, 0x9b, 0x2b, 0xe4, 0xcc, 0xc5, 0x93, 0x9b, 0x99, 0xe7, 0x94,
+	0x5a, 0xe2, 0x98, 0x9b, 0x5f, 0x9a, 0x57, 0x22, 0xc1, 0xa8, 0xc0, 0xa8, 0xc1, 0x6d, 0x24, 0xa9,
+	0x07, 0x31, 0x41, 0x0f, 0x64, 0x82, 0x1e, 0xd4, 0x04, 0x3d, 0xe7, 0xfc, 0xcc, 0x3c, 0x27, 0x96,
+	0x13, 0xf7, 0xe4, 0x19, 0x82, 0x50, 0x34, 0x81, 0x0d, 0x49, 0xac, 0x40, 0x18, 0xc2, 0x44, 0xac,
+	0x21, 0x48, 0x9a, 0x84, 0xec, 0xb9, 0xb8, 0xa0, 0xbe, 0x72, 0x4b, 0x4d, 0x95, 0x60, 0x26, 0xce,
+	0x08, 0x24, 0x2d, 0x42, 0x7a, 0x5c, 0x42, 0x50, 0x9e, 0x6f, 0x66, 0x5e, 0x40, 0x7e, 0x7e, 0x4e,
+	0x70, 0x66, 0x55, 0xaa, 0x04, 0x8b, 0x02, 0xa3, 0x06, 0x4b, 0x10, 0x16, 0x19, 0x2b, 0x96, 0x19,
+	0x0b, 0xe4, 0x19, 0x9c, 0xb4, 0x4f, 0x3c, 0x92, 0x63, 0xbc, 0xf0, 0x48, 0x8e, 0xf1, 0xc1, 0x23,
+	0x39, 0xc6, 0x09, 0x8f, 0xe5, 0x18, 0x2e, 0x3c, 0x96, 0x63, 0xb8, 0xf1, 0x58, 0x8e, 0x21, 0x4a,
+	0x10, 0x16, 0x05, 0x15, 0xfa, 0x50, 0x56, 0x12, 0x1b, 0x38, 0xfc, 0x8c, 0x01, 0x01, 0x00, 0x00,
+	0xff, 0xff, 0x80, 0x2d, 0xe3, 0x2f, 0x9e, 0x01, 0x00, 0x00,
 }
 
 func (m *Params) Marshal() (dAtA []byte, err error) {
@@ -97,6 +142,41 @@ func (m *Params) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	if m.LotteryMinPoolSize != 0 {
+		i = encodeVarintParams(dAtA, i, uint64(m.LotteryMinPoolSize))
+		i--
+		dAtA[i] = 0x20
+	}
+	{
+		size, err := m.LotteryFee.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintParams(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0x1a
+	{
+		size, err := m.MaxBetAmount.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintParams(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0x12
+	{
+		size, err := m.MinBetAmount.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintParams(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
 	return len(dAtA) - i, nil
 }
 
@@ -117,6 +197,15 @@ func (m *Params) Size() (n int) {
 	}
 	var l int
 	_ = l
+	l = m.MinBetAmount.Size()
+	n += 1 + l + sovParams(uint64(l))
+	l = m.MaxBetAmount.Size()
+	n += 1 + l + sovParams(uint64(l))
+	l = m.LotteryFee.Size()
+	n += 1 + l + sovParams(uint64(l))
+	if m.LotteryMinPoolSize != 0 {
+		n += 1 + sovParams(uint64(m.LotteryMinPoolSize))
+	}
 	return n
 }
 
@@ -155,6 +244,124 @@ func (m *Params) Unmarshal(dAtA []byte) error {
 			return fmt.Errorf("proto: Params: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field MinBetAmount", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowParams
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthParams
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthParams
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.MinBetAmount.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field MaxBetAmount", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowParams
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthParams
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthParams
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.MaxBetAmount.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field LotteryFee", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowParams
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthParams
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthParams
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.LotteryFee.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 4:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field LotteryMinPoolSize", wireType)
+			}
+			m.LotteryMinPoolSize = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowParams
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.LotteryMinPoolSize |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
 		default:
 			iNdEx = preIndex
 			skippy, err := skipParams(dAtA[iNdEx:])

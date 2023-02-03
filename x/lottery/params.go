@@ -1,6 +1,7 @@
 package lottery
 
 import (
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	"gopkg.in/yaml.v2"
 )
@@ -19,7 +20,14 @@ func NewParams() Params {
 
 // DefaultParams returns a default set of parameters
 func DefaultParams() Params {
-	return NewParams()
+	p := NewParams()
+
+	p.LotteryFee = sdk.NewCoin(sdk.DefaultBondDenom, sdk.NewInt(5_000_000))
+	p.MinBetAmount = sdk.NewCoin(sdk.DefaultBondDenom, sdk.NewInt(1_000_000))
+	p.MaxBetAmount = sdk.NewCoin(sdk.DefaultBondDenom, sdk.NewInt(100_000_000))
+	p.LotteryMinPoolSize = 10
+
+	return p
 }
 
 // ParamSetPairs get the params.ParamSet

@@ -2,11 +2,23 @@ syntax = "proto3";
 package lottery.lottery;
 
 import "gogoproto/gogo.proto";
+import "cosmos/base/v1beta1/coin.proto";
 
 option go_package = "lottery/x/lottery";
 
 // Params defines the parameters for the module.
 message Params {
-  option (gogoproto.goproto_stringer) = false;
-  
+    option (gogoproto.goproto_stringer) = false;
+
+    // what is the minimum bet amount (eg 1LOT)
+    cosmos.base.v1beta1.Coin minBetAmount = 1 [(gogoproto.nullable) = false];  
+
+    // what is the max bet amount
+    cosmos.base.v1beta1.Coin maxBetAmount = 2 [(gogoproto.nullable) = false];
+
+    // the lottery fee amount
+    cosmos.base.v1beta1.Coin lotteryFee = 3 [(gogoproto.nullable) = false];
+
+    // the minimimum lottery pool size
+    uint64 lotteryMinPoolSize            = 4;
 }

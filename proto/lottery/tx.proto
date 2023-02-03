@@ -1,6 +1,8 @@
 syntax = "proto3";
 package lottery.lottery;
 
+import "gogoproto/gogo.proto";
+import "cosmos/base/v1beta1/coin.proto";
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "lottery/x/lottery";
@@ -8,6 +10,22 @@ option go_package = "lottery/x/lottery";
 // Msg defines the Msg service.
 service Msg {
     // this line is used by starport scaffolding # proto/tx/rpc
+
+    // PlaceBet post a bet to participate to a lottery
+    rpc PlaceBet(MsgPlaceBetRequest) returns (MsgPlaceBetResponse);
 }
 
 // this line is used by starport scaffolding # proto/tx/message
+
+
+// MsgUpdateDidDocument replace an existing did document with a new version
+message MsgPlaceBetRequest {
+    option (gogoproto.equal)            = false;
+    option (gogoproto.goproto_getters)  = false;
+  
+    // amount the amount that the tramsactopm signer is betting
+    cosmos.base.v1beta1.Coin amount = 1 [(gogoproto.nullable) = false]; 
+    string          signer     = 2; // address of the account signing the message
+}
+
+message MsgPlaceBetResponse {}

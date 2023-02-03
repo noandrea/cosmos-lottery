@@ -97,6 +97,7 @@ import (
 
 	"lottery/docs"
 
+	"lottery/x/lottery"
 	lotterymoduletypes "lottery/x/lottery"
 	lotterymodulekeeper "lottery/x/lottery/keeper"
 	lotterymodule "lottery/x/lottery/module"
@@ -104,7 +105,7 @@ import (
 )
 
 const (
-	AccountAddressPrefix = "cosmos"
+	AccountAddressPrefix = "lot"
 	Name                 = "lottery"
 )
 
@@ -167,6 +168,7 @@ var (
 		govtypes.ModuleName:            {authtypes.Burner},
 		ibctransfertypes.ModuleName:    {authtypes.Minter, authtypes.Burner},
 		// this line is used by starport scaffolding # stargate/app/maccPerms
+		lottery.ModuleName: nil,
 	}
 )
 
@@ -381,6 +383,7 @@ func New(
 		keys[lotterymoduletypes.StoreKey],
 		keys[lotterymoduletypes.MemStoreKey],
 		app.GetSubspace(lotterymoduletypes.ModuleName),
+		app.BankKeeper,
 	)
 	lotteryModule := lotterymodule.NewAppModule(appCodec, app.LotteryKeeper, app.AccountKeeper, app.BankKeeper)
 
