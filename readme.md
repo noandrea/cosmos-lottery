@@ -1,52 +1,73 @@
-# lottery
-**lottery** is a blockchain built using Cosmos SDK and Tendermint and created with [Ignite CLI](https://ignite.com/cli).
+> Disclaimer: this project was developed as a coding challenge
 
-## Get started
+# Lottery
+**Lottery** is a protocol that implements a simple lottery mechanism. 
 
-```
-ignite chain serve
-```
 
-`serve` command installs dependencies, builds, initializes, and starts your blockchain in development.
+## Code structure
 
-### Configure
+The implementation of the lottery protocol is contained in the `x/lottery` folder, and the main logic for the implementation is contained in the following sources:
 
-Your blockchain in development can be configured with `config.yml`. To learn more, see the [Ignite CLI docs](https://docs.ignite.com).
+- [`x/lottery/keeper/msg_server.go`](x/lottery/keeper/msg_server.go) - responsible for processing incoming bet transactions
+-  [`x/lottery/keeper/keeper.go`](x/lottery/keeper/msg_server.go) - responsible for processing incoming bet transactions
+- [`x/lottery/module/abci.go`](x/lottery/module/abci.go) - logic to execute the lottery at the end of each block. 
 
-### Web Frontend
+The message for participating in a lottery is defined in the [`proto/lottery/tx.proto`](proto/lottery/tx.proto) file.
 
-Ignite CLI has scaffolded a Vue.js-based web app in the `vue` directory. Run the following commands to install dependencies and start the app:
+## Quickstart
 
-```
-cd vue
-npm install
-npm run serve
-```
-
-The frontend app is built using the `@starport/vue` and `@starport/vuex` packages. For details, see the [monorepo for Ignite front-end development](https://github.com/ignite-hq/web).
-
-## Release
-To release a new version of your blockchain, create and push a new tag with `v` prefix. A new draft release with the configured targets will be created.
+To start the chain locally run the command 
 
 ```
-git tag v0.1
-git push origin v0.1
+make start-dev
 ```
 
-After a draft release is created, make your final changes from the release page and publish it.
+this will setup a node with 22 accounts:
 
-### Install
-To install the latest version of your blockchain node's binary, execute the following command on your machine:
+- 1 validator account: validator
+- 21 accounts to use for betting: player01 - player21
+
+(For more information about the chain setup check the [`scripts/seeds/00_start_chain.sh`](scripts/seeds/00_start_chain.sh) script)
+
+To run a round of lottery bets run the seed script
 
 ```
-curl https://get.ignite.com/username/lottery@latest! | sudo bash
+scripts/seeds/01_bets.sh
 ```
-`username/lottery` should match the `username` and `repo_name` of the Github repository to which the source code was pushed. Learn more about [the install process](https://github.com/allinbits/starport-installer).
 
-## Learn more
+> Note: logs entries for the lottery can be filtered by the `module=x/lottery` string
 
-- [Ignite CLI](https://ignite.com/cli)
-- [Tutorials](https://docs.ignite.com/guide)
-- [Ignite CLI docs](https://docs.ignite.com)
-- [Cosmos SDK docs](https://docs.cosmos.network)
-- [Developer Chat](https://discord.gg/ignite)
+
+## Caveats
+
+- Amounts are expressed in micro tokens.
+- Automated testing has not been implemented, specifically the `msg_server_test.go` and `abci_test.go` are the critical sections that, in a production roadmap, should be implemented first.
+- Protocol queries are missing, in particular, it would be useful to have a query that returns the current lottery balance.
+- Governance support to change the parameters of the chain, specifically for the lottery fee, and the min-max bet amounts, has not been implemented.
+
+## Challenge issues
+
+#### Section: Enter Lottery transaction
+
+> Lottery fee is 5token , minimal bet is 1token
+
+since the fee is a set amount, it is not necessary to have it as a transaction parameter.
+
+#### Section: Lottery blocks
+
+> the chosen block proposer can't have any lottery transactions with itself as a sender, if this is the case, then the lottery won’t fire this block, and continue on the next one
+
+With this clause, there is a risk that the lottery will never end.
+
+> if the same user has new lottery transactions, then only the last one counts, counter doesn’t increase on substitution.
+
+In the implementation, an account can only make a single bet. 
+
+#### Section: Choosing a winner
+
+> At the end of the lottery, on the block end, append the data of the transactions (retaining their order) , then hash the data to get the result.
+
+To simplify the logic for calculating the hash for the lottery is different in the implementation and it is based on updating and storing a hash with the data of new transactions when they are received.
+
+
+

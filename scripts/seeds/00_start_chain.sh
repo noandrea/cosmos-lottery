@@ -38,33 +38,34 @@ then
     echo "y" | lotteryd keys add player18
     echo "y" | lotteryd keys add player19
     echo "y" | lotteryd keys add player20
+    echo "y" | lotteryd keys add player21
 
     echo "video adult rule exhaust tube crater lunch route clap pudding poet pencil razor pluck veteran hill stock thunder sense riot fox oppose glare bar" | lotteryd keys add player21 --recover --keyring-backend test
 
     echo "Adding genesis account"
     
     # this is to have the accounts on chain
-    lotteryd add-genesis-account $(lotteryd keys show player01 -a) 50000000000000stake
-    lotteryd add-genesis-account $(lotteryd keys show player02 -a) 50000000000000stake
-    lotteryd add-genesis-account $(lotteryd keys show player03 -a) 50000000000000stake
-    lotteryd add-genesis-account $(lotteryd keys show player04 -a) 50000000000000stake
-    lotteryd add-genesis-account $(lotteryd keys show player05 -a) 50000000000000stake
-    lotteryd add-genesis-account $(lotteryd keys show player06 -a) 50000000000000stake
-    lotteryd add-genesis-account $(lotteryd keys show player07 -a) 50000000000000stake
-    lotteryd add-genesis-account $(lotteryd keys show player08 -a) 50000000000000stake
-    lotteryd add-genesis-account $(lotteryd keys show player09 -a) 50000000000000stake
-    lotteryd add-genesis-account $(lotteryd keys show player10 -a) 50000000000000stake
-    lotteryd add-genesis-account $(lotteryd keys show player11 -a) 50000000000000stake
-    lotteryd add-genesis-account $(lotteryd keys show player12 -a) 50000000000000stake
-    lotteryd add-genesis-account $(lotteryd keys show player13 -a) 50000000000000stake
-    lotteryd add-genesis-account $(lotteryd keys show player14 -a) 50000000000000stake
-    lotteryd add-genesis-account $(lotteryd keys show player15 -a) 50000000000000stake
-    lotteryd add-genesis-account $(lotteryd keys show player16 -a) 50000000000000stake
-    lotteryd add-genesis-account $(lotteryd keys show player17 -a) 50000000000000stake
-    lotteryd add-genesis-account $(lotteryd keys show player18 -a) 50000000000000stake
-    lotteryd add-genesis-account $(lotteryd keys show player19 -a) 50000000000000stake
-    lotteryd add-genesis-account $(lotteryd keys show player20 -a) 50000000000000stake
-    lotteryd add-genesis-account $(lotteryd keys show player21 -a) 50000000000000stake
+    lotteryd add-genesis-account $(lotteryd keys show player01 -a) 500000000stake
+    lotteryd add-genesis-account $(lotteryd keys show player02 -a) 500000000stake
+    lotteryd add-genesis-account $(lotteryd keys show player03 -a) 500000000stake
+    lotteryd add-genesis-account $(lotteryd keys show player04 -a) 500000000stake
+    lotteryd add-genesis-account $(lotteryd keys show player05 -a) 500000000stake
+    lotteryd add-genesis-account $(lotteryd keys show player06 -a) 500000000stake
+    lotteryd add-genesis-account $(lotteryd keys show player07 -a) 500000000stake
+    lotteryd add-genesis-account $(lotteryd keys show player08 -a) 500000000stake
+    lotteryd add-genesis-account $(lotteryd keys show player09 -a) 500000000stake
+    lotteryd add-genesis-account $(lotteryd keys show player10 -a) 500000000stake
+    lotteryd add-genesis-account $(lotteryd keys show player11 -a) 500000000stake
+    lotteryd add-genesis-account $(lotteryd keys show player12 -a) 500000000stake
+    lotteryd add-genesis-account $(lotteryd keys show player13 -a) 500000000stake
+    lotteryd add-genesis-account $(lotteryd keys show player14 -a) 500000000stake
+    lotteryd add-genesis-account $(lotteryd keys show player15 -a) 500000000stake
+    lotteryd add-genesis-account $(lotteryd keys show player16 -a) 500000000stake
+    lotteryd add-genesis-account $(lotteryd keys show player17 -a) 500000000stake
+    lotteryd add-genesis-account $(lotteryd keys show player18 -a) 500000000stake
+    lotteryd add-genesis-account $(lotteryd keys show player19 -a) 500000000stake
+    lotteryd add-genesis-account $(lotteryd keys show player20 -a) 500000000stake
+    lotteryd add-genesis-account $(lotteryd keys show player21 -a) 500000000stake
     ## add the validator 
     lotteryd add-genesis-account $(lotteryd keys show validator -a) 500000000000000stake
     lotteryd gentx validator 100000000000000stake --chain-id lottery-1

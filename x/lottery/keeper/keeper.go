@@ -24,7 +24,6 @@ type (
 		memKey     sdk.StoreKey
 		paramstore paramtypes.Subspace
 		bank       lottery.BankKeeper
-		accounts   lottery.AccountKeeper
 	}
 )
 
@@ -67,19 +66,23 @@ const (
 	PayoutBet
 )
 
+// Logger prepare the logger for the lottery module
 func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("module", fmt.Sprintf("x/%s", lottery.ModuleName))
 }
 
+// GetBalance retrieve a spendable balance for an account
 func (k Keeper) GetBalance(ctx sdk.Context, account sdk.AccAddress, demon string) sdk.Int {
 	return k.bank.SpendableCoins(ctx, account).AmountOf(demon)
 }
 
+// GetPoolSize retrieve the number of bets for the current lottery
 func (k Keeper) GetPoolSize(ctx sdk.Context) uint64 {
 	store := ctx.KVStore(k.storeKey)
 	return MustGetInt(store, betsCounterKey, sdk.ZeroInt()).Uint64()
 }
 
+// GetLotteryData retrieve the current lottery data necessary to calculate the winner and the payout
 func (k Keeper) GetLotteryData(ctx sdk.Context) (lotteryHash []byte, maxBet, minBet sdk.Int) {
 	store := ctx.KVStore(k.storeKey)
 	minBet = MustGetInt(store, minLotteryBetKey, sdk.ZeroInt())
@@ -88,6 +91,7 @@ func (k Keeper) GetLotteryData(ctx sdk.Context) (lotteryHash []byte, maxBet, min
 	return
 }
 
+// GetLotteryWinner retrieve the account associated with a bet index
 func (k Keeper) GetLotteryWinner(ctx sdk.Context, winnerIndex uint64) (winnerAddress sdk.AccAddress, winnerBet lottery.Bet, err error) {
 	store := ctx.KVStore(k.storeKey)
 
@@ -115,6 +119,7 @@ func (k Keeper) GetLotteryWinner(ctx sdk.Context, winnerIndex uint64) (winnerAdd
 	return
 }
 
+// ExecutePayout pays the amount to the winner and reset the lottery status
 func (k Keeper) ExecutePayout(ctx sdk.Context, recipient sdk.AccAddress, payoutType Payout) error {
 	store := ctx.KVStore(k.storeKey)
 	var payoutAmount sdk.Int
@@ -153,14 +158,14 @@ func (k Keeper) ExecutePayout(ctx sdk.Context, recipient sdk.AccAddress, payoutT
 	return nil
 }
 
+// HasBet verify if an account has a bet placed for the current lottery
 func (k Keeper) HasBet(ctx sdk.Context, account string) bool {
 	store := ctx.KVStore(k.storeKey)
 	key := append(betKeyPrefix, []byte(account)...)
 	return store.Get(key) != nil
 }
 
-// PlaceBet place a bet for the current lottery. It returns true if the
-// bet has been placed, or false if a bet for the same account was already present
+// PlaceBet place a bet for the current lottery
 func (k Keeper) PlaceBet(ctx sdk.Context, account sdk.AccAddress, bet lottery.Bet, txBytes []byte) error {
 	store := ctx.KVStore(k.storeKey)
 	key := append(betKeyPrefix, []byte(account.String())...)
@@ -223,6 +228,7 @@ func MustGetInt(store types.KVStore, key []byte, defaultValue sdk.Int) sdk.Int {
 	return i
 }
 
+// MustStoreInt serialize and store an int to the store.
 func MustStoreInt(store types.KVStore, key []byte, value sdk.Int) {
 	binValue, err := value.Marshal()
 	if err != nil {
